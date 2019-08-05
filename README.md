@@ -7,6 +7,8 @@
 
 流控全部打包百度云打包下载：https://pan.baidu.com/s/1w04AOHSDMZHUqqrshUMhSg
 
+php_yum仓库百度云打包下载：https://pan.baidu.com/s/1Injn-7qJVx1hSTweBUDLfw
+
 #### 软件架构
 支持CentOS 7.0 -7.5 安装搭建
 
