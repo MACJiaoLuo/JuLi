@@ -1,0 +1,9 @@
+#聚力流控PHP程序
+#作者QQ: 1744744222
+#将baseurl更换你的域名即可！后面的文件夹名称勿动，必须保持默认！
+[JuLi_PHP]
+name=JuLi_PHP
+baseurl=http://你的域名/yum/php/el7/
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7

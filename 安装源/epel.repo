@@ -1,0 +1,25 @@
+#EPEL仓库接口，采用国内阿里云接口，支持封国外的镇江BGP服务器搭建！
+#作者QQ: 1744744222
+[epel]
+name=JuLi_epel
+baseurl=https://mirrors.aliyun.com/epel/7/$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-7
+
+[epel-debuginfo]
+name=JuLi_epel-debuginfo
+baseurl=https://mirrors.aliyun.com/epel/7/$basearch/debug
+failovermethod=priority
+enabled=0
+gpgkey=https://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+
+[epel-source]
+name=JuLi_epel-source
+baseurl=https://mirrors.aliyun.com/epel/7/SRPMS/
+failovermethod=priority
+enabled=0
+gpgkey=https://mirrors.aliyun.com/epel/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
