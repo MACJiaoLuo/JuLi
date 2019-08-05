@@ -1,0 +1,302 @@
+#!/bin/bash
+#QQ: 1744744222
+#欢迎狗凌一来偷！
+
+
+HeYiXiao_Sub_machine_connection_host()
+{
+	clear
+	echo -e "\033[1;42;37m尊敬的用户您好，对接 聚力流控™ 系统之前请您先仔细填写以下信息，如果不懂的就别瞎弄！ \033[0m"
+	echo -e "\033[1;35m主机IP地址：请直接填写主机公网IP \033[0m" 
+	echo -e "\033[1;35m主机数据库端口：默认是 3306 \033[0m" 
+	echo -e "\033[1;35m主机数据库账户：默认是 root \033[0m" 
+	echo -e "\033[1;35m主机数据库密码：请填写主机搭建时的数据库密码 \033[0m" 
+	echo -e "\033[1;42;37m看懂了回车继续！ \033[0m"
+	read
+	sleep 1
+
+	read -p "请输入本机IP地址(默认自动获取): " JuLi_SQL_Im_Host
+	if [ -z "$JuLi_SQL_Im_Host" ];then
+	JuLi_SQL_Im_Host=`curl -s http://members.3322.org/dyndns/getip`;
+	fi
+	echo -e "已输入本机IP地址为:\033[32m "$JuLi_SQL_Im_Host"\033[0m"
+	
+	echo
+	sleep 1
+	read -p "请输入主机IP地址: " JuLi_SQL_Host
+	if [ -z "$JuLi_SQL_Host" ];then
+	JuLi_SQL_Host=
+	fi
+	echo -e "已输入主机IP地址为:\033[32m "$JuLi_SQL_Host"\033[0m"
+	
+	echo
+	sleep 1
+	read -p "请输入主机数据库端口(默认3306): " JuLi_SQL_Port
+	if [ -z "$JuLi_SQL_Port" ];then
+	JuLi_SQL_Port=3306
+	fi
+	echo -e "已输入主机数据库端口为:\033[32m "$JuLi_SQL_Port"\033[0m"
+	
+	echo
+	sleep 1
+	read -p "请输入主机数据库账号(默认root): " JuLi_SQL_User
+	if [ -z "$JuLi_SQL_User" ];then
+	JuLi_SQL_User=root
+	fi
+	echo -e "已输入主机数据库账号为:\033[32m "$JuLi_SQL_User"\033[0m"
+
+	echo
+	sleep 1
+	read -p "请输入主机数据库密码: " JuLi_SQL_Pass
+	if [ -z "$JuLi_SQL_Pass" ];then
+	JuLi_SQL_Pass=
+	fi
+	echo -e "已输入主机数据库密码为:\033[32m "$JuLi_SQL_Pass"\033[0m"
+	
+	sleep 2
+	
+	echo
+	echo "请稍等....."
+	
+	sleep 4
+	
+	mysql -h${JuLi_SQL_Host} -P${JuLi_SQL_Port} -u${JuLi_SQL_User} -p${JuLi_SQL_Pass} -e quit;
+	if [[ $? -eq 0 ]];then
+	echo "主机数据库/云库连接成功！" >/dev/null 2>&1
+	else
+	echo "主机数据库/云库连接失败，请检查您的   主机IP地址、主机数据库端口、主机数据库账号、主机数据库密码   是否正确！";
+	exit;0
+	fi
+	
+	
+	echo
+	echo "正在为您负载，请稍等......"
+	echo
+	sleep 3
+	
+	vpn stop
+	
+	rm -rf /etc/openvpn/auth_config.conf
+	
+	cat >> /etc/openvpn/auth_config.conf <<EOF
+#!/bin/bash
+#-----------------------------------
+#	聚力网络科技 www.juliwangluo.cn
+#	       如非必要 请勿修改 
+#        何以潇QQ：1744744222
+#-----------------------------------
+#兼容配置文件 此文件格式既可以适应shell也可以适应聚力监控，但是这里不能使用变量，也不是真的SHELL文件，不要写任何shell在这个文件
+#聚力流控监控系统配置文件
+#请谨慎修改
+#数据库地址
+mysql_host=${JuLi_SQL_Host}
+#数据库用户
+mysql_user=${JuLi_SQL_User}
+#数据库密码
+mysql_pass=${JuLi_SQL_Pass}
+#数据库端口
+mysql_port=${JuLi_SQL_Port}
+#数据库端口
+mysql_data=vpndata
+#本机地址
+address=${JuLi_SQL_Im_Host}
+#指定异常记录回收时间 单位s 600即为十分钟
+unset_time=600
+#删除僵尸记录地址
+del="/root/res/del"
+
+#进程1监控地址
+status_file_1="/var/www/html/openvpn_api/online_1194.txt 7075 1194 tcp-server"
+status_file_2="/var/www/html/openvpn_api/online_1195.txt 7076 1195 tcp-server"
+status_file_3="/var/www/html/openvpn_api/online_1196.txt 7077 1196 tcp-server"
+status_file_4="/var/www/html/openvpn_api/online_1197.txt 7078 1197 tcp-server"
+status_file_5="/var/www/html/openvpn_api/user-status-udp.txt 7079 53 udp"
+#睡眠时间
+sleep=3
+EOF
+	
+	chmod -R 0777 /etc/openvpn/auth_config.conf
+	
+	rm -rf /var/www/html/config.php
+	
+	cat >> /var/www/html/config.php <<EOF
+<?php
+
+	//聚力网络科技 版权所有 
+	//何以潇QQ：1744744222
+	
+define("_host_","${JuLi_SQL_Host}");
+define("_user_","${JuLi_SQL_User}");
+define("_pass_","${JuLi_SQL_Pass}");
+define("_port_","${JuLi_SQL_Port}");
+define("_ov_","vpndata");
+define("_openvpn_","openvpn");
+define("_iuser_","iuser");
+define("_ipass_","pass");
+define("_isent_","isent");
+define("_irecv_","irecv");
+define("_starttime_","starttime");
+define("_endtime_","endtime");
+define("_maxll_","maxll");
+define("_other_","dlid,tian");
+define("_i_","i");
+EOF
+	
+	
+	chmod -R 0777 /var/www/html/config.php
+	
+	vpn restart 
+	
+	echo
+	echo
+	#echo "如果您是 对接云库，重新执行脚本选择 3 导入 聚力流控™ 数据，如果您有 自己的数据 ，请选择 4 导入~~~"
+	#echo "如果您不是 对接云库，请无视以上一句话~"
+	#echo 
+	echo "系统已经负载完成！"
+	exit;0
+}
+
+
+HeYiXiao_Open_remote_database()
+{
+	clear
+	echo -e "\033[1;42;37m尊敬的用户您好，对接 聚力流控™ 系统之前请您先仔细填写以下信息，如果不懂的就别瞎弄！ \033[0m"
+	echo -e "\033[1;36m本机数据库地址请 填写 127.0.0.1 或者 直接回车默认 \033[0m" 
+	echo -e "\033[1;36m本机数据库端口默认为3306 如果 您不知道 或者 没有修改 过 请回车默认3306 \033[0m" 
+	echo -e "\033[1;36m本机数据库账户 默认为 root  \033[0m" 
+	echo -e "\033[1;36m本机数据库密码 请填写您的相对应的密码  \033[0m" 
+	echo -e "\033[1;42;37m看懂了回车继续！ \033[0m"
+
+	read
+	sleep 1
+	read -p "请输入本机数据库地址(默认localhost): " JuLi_SQL_Host
+	if [ -z "$JuLi_SQL_Host" ];then
+	JuLi_SQL_Host=localhost
+	fi
+	echo -e "已输入本机数据库地址为:\033[32m "$JuLi_SQL_Host"\033[0m"
+	
+	echo
+	sleep 1
+	read -p "请输入本机数据库端口(默认3306): " JuLi_SQL_Port
+	if [ -z "$JuLi_SQL_Port" ];then
+	JuLi_SQL_Port=3306
+	fi
+	echo -e "已输入本机数据库端口为:\033[32m "$JuLi_SQL_Port"\033[0m"
+	
+	echo
+	sleep 1
+	read -p "请输入本机数据库账号(默认root): " JuLi_SQL_User
+	if [ -z "$JuLi_SQL_User" ];then
+	JuLi_SQL_User=root
+	fi
+	echo -e "已输入本机数据库账号为:\033[32m "$JuLi_SQL_User"\033[0m"
+
+	echo
+	sleep 1
+	read -p "请输入本机数据库密码: " JuLi_SQL_Pass
+	if [ -z "$JuLi_SQL_Pass" ];then
+	JuLi_SQL_Pass=
+	fi
+	echo -e "已输入本机数据库密码为:\033[32m "$JuLi_SQL_Pass"\033[0m"
+	
+	sleep 2
+	
+	echo
+	echo "请稍等....."
+	
+	sleep 4
+	
+	mysql -h${JuLi_SQL_Host} -P${JuLi_SQL_Port} -u${JuLi_SQL_User} -p${JuLi_SQL_Pass} -e quit;
+	if [[ $? -eq 0 ]];then
+	echo "本机数据库/连接成功！" >/dev/null 2>&1
+	else
+	echo "本机数据库连接失败，请检查您的   本机数据库地址、本机数据库端口、本机数据库账号、本机数据库密码   是否正确！";
+	exit;0
+	fi
+	
+	
+	echo "正在操作中，请稍等......"
+	echo 
+	sleep 5
+	
+	mysql -h${JuLi_SQL_Host} -P${JuLi_SQL_Port} -u${JuLi_SQL_User} -p${JuLi_SQL_Pass} -e "grant all privileges on *.* to '${JuLi_SQL_User}'@'%' identified by '${JuLi_SQL_Pass}' with grant option;flush privileges;"
+
+
+
+
+	systemctl restart mariadb.service
+	if [[ $? -eq 0 ]];then
+	echo "数据库重启成功！主机开启负载权限成功！"
+	exit;0
+	else
+	echo "数据库出错，脚本运行错误！主机开启负载权限失败！"
+	exit;0
+	fi
+}
+
+
+
+Loading_load()
+{
+
+JuLi_Check
+
+clear
+echo "----------------------------------------------------------------------------"
+echo "                     欢迎使用聚力流控™系统负载脚本                          "
+echo "              ---- 聚力网络科技 | www.juliwangluo.cn ----                   "
+echo 
+echo "----------------------------------------------------------------------------"
+echo "1、主机开启负载权限 （ 主机搭建后只需开启一次即可  无限负载副机 ）          "
+echo "----------------------------------------------------------------------------"
+echo "2、副机连接主机 （负载过的机器也可以再次负载不需要重装）    "
+echo "----------------------------------------------------------------------------"
+echo "3、退出脚本！                                                               "
+echo "----------------------------------------------------------------------------"
+echo
+read -p " 请输入数字 [1-3]: " num
+case "$num" in
+	1)
+	HeYiXiao_Open_remote_database
+	;;
+	2)
+	HeYiXiao_Sub_machine_connection_host
+	;;
+	3)
+	echo
+	echo " 感谢您的使用，再见~"
+	exit;0
+	;;
+	*)
+	echo
+	echo -e "\033[31m输入错误！请重新运行脚本！\033[0m "
+	;;
+esac
+
+
+
+
+}
+
+JuLi_Check()
+{
+
+	if [ ! -f /etc/openvpn/auth_config.conf ]; then
+	echo 
+	echo "检测到您还未安装 聚力流控™ 系统，无法执行此脚本，请前往(www.juliwangluo.cn)获取脚本搭建！"
+	exit;0
+	fi
+	
+	if [ ! -f /var/www/html/config.php ]; then
+	echo
+	echo "检测到您还未安装 聚力流控™ 系统，无法执行此脚本，请前往(www.juliwangluo.cn)获取脚本搭建！"
+	exit;0
+	fi
+	
+	
+}
+
+
+
+Loading_load
+exit;0
