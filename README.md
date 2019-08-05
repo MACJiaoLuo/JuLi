@@ -2,8 +2,8 @@
 
 #### 介绍
 聚力流控V4.6全开源 OpenVPN 免流搭建  脚本全部开源  搭建有问题请联系作者
-码云传不了web文件，需要web文件请点击百度云下载：https://pan.baidu.com/s/1Quo4rhWTV22OjYGKSmYn9Q
-百度云打包下载：https://pan.baidu.com/s/1w04AOHSDMZHUqqrshUMhSg
+需要web文件请点击百度云下载：https://pan.baidu.com/s/1Quo4rhWTV22OjYGKSmYn9Q
+流控全部打包百度云打包下载：https://pan.baidu.com/s/1w04AOHSDMZHUqqrshUMhSg
 
 #### 软件架构
 支持CentOS 7.0 -7.5 安装搭建
