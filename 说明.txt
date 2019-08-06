@@ -1,0 +1,45 @@
+﻿作者：何以潇
+QQ：1744744222
+
+脚本已全部开源    聚力流控V4.6版本
+
+
+test1.c  为Download.php 下载验证版本  二开的直接用这个吧 对接数据库和授权然后自己改改 这样未授权IP无法下载源
+
+test2.c  为直接下载版本   不需要授权验证  适合自己用
+
+
+
+php安装源无法加授权   把php安装源上传自己的空间或服务器，这样安装php很快，用自己的yum源
+
+打开安装源里的JuLi_PHP.repo  修改baseurl这一行  填上你的域名就可以了   后面的文件夹勿动 是php默认的  没法改  但可以添加一个文件夹在域名的后面(不懂我也没办法呀)
+
+
+如果嫌麻烦那你就去用那种百度烂大街的php源  你就慢慢等吧
+
+
+编译方法
+
+linux下安装gcc
+
+centos   yum -y install gcc
+
+debian   apt-get -y install gcc
+
+
+gcc -o 编译后名称 编译文件名称
+
+例如 gcc -o JuLi.bin test1.c
+
+
+
+
+名称你们随便
+
+脚本默认名称 JuLi.bin
+脚本默认启动名称   ./JuLi.bin
+如需更改此变量请搜索  Start_Check_Scripts   修改此变量   但必须以  ./   方式启动    bash命令无法启动
+
+
+
+教程结束
